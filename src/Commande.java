@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.List;
 
 public class Commande {
     ArrayList<Plat> laCommande; // Les élements de la liste sotn de type plat, on pourra donc les manipulers avec elt.getnom() apr exemple
@@ -6,6 +7,8 @@ public class Commande {
     Commande() {
         this.laCommande = new ArrayList<>();
     }
+
+    public List<Plat> getCommande() {return laCommande;}
 
     public void ajtPlatDansCommande(Plat platAjoute) {
         laCommande.add(platAjoute);

@@ -1,11 +1,16 @@
 import java.util.ArrayList;
 import java.util.List;
+import
 
 public class Stock {
     private List<ingredient> ingredients;
 
     public Stock() {
         this.ingredients = new ArrayList<>();
+    }
+
+    public List<ingredient> getIngredients() {
+        return ingredients;
     }
 
     public void ajouterIngredient(ingredient ingr) {
@@ -16,7 +21,7 @@ public class Stock {
         ingredients.remove(ingr);
     }
 
-    // Les méthodes permettant de gérer les stocks
+    // Les méthodes permettant d'enlever du stock apres avoir fini une commande
     public void mettreAJourStock(List<ingredient> ingredientsDuPlat) {
         //Parcours dans la liste des ingrédients du plan (ex: marguerita 100g ensuite tomate 500g etc..)
         for (ingredient besoin : ingredientsDuPlat) {
