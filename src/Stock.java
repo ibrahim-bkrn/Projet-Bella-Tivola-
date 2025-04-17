@@ -9,6 +9,14 @@ public class Stock {
     public Stock() {
         this.ingredients = new ArrayList<>();
         db.main();
+
+        try{
+            for (ingredient ingr : db.selectIngredientsPourStock()) {
+                ingredients.add(ingr);
+            }
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     public List<ingredient> getIngredients() {

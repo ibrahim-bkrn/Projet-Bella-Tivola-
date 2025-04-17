@@ -33,7 +33,7 @@ public class test {
         menu.ajtPlatDansMenu(pizza);
         menu.ajtPlatDansMenu(tiramisu);
 
-        menu.afficherMenu();
+        //menu.afficherMenu();
 
         // Création d'une commande
         Commande commande = new Commande();

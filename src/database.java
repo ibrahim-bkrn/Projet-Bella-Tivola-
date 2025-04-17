@@ -1,4 +1,5 @@
 import java.sql.*;
+import java.util.*;
 
 public class database {
     private static String url = "jdbc:mysql://localhost:3306/bellaTivola";
@@ -36,6 +37,26 @@ public class database {
         preparedStatement.executeUpdate();
     }
 
+    public List<Plat> selectPlatsPourMenu() throws SQLException {
+        List<Plat> menu = new ArrayList<>();
+        String sql = "SELECT nom, prix, type FROM plats";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            String nom = rs.getString("nom");
+            double prix = rs.getDouble("prix");
+            String type = rs.getString("type");
+
+            Plat plat = new Plat(nom, prix, type);
+            menu.add(plat);
+        }
+
+        return menu;
+    }
+
+
     //Gérer la table stock des ingrédients
     public void insertIngredient(ingredient ingr) throws SQLException {
         String sql = "INSERT INTO stocks(nom,quantite) VALUES(?,?)";
@@ -54,6 +75,24 @@ public class database {
         preparedStatement.setString(1, ingr.getNom());
 
         preparedStatement.executeUpdate();
+    }
+
+    public List<ingredient> selectIngredientsPourStock() throws SQLException {
+        List<ingredient> stock = new ArrayList<>();
+        String sql = "SELECT nom, quantite FROM stocks";
+
+        PreparedStatement stmt = conn.prepareStatement(sql);
+        ResultSet rs = stmt.executeQuery();
+
+        while (rs.next()) {
+            String nom = rs.getString("nom");
+            int quantite = rs.getInt("quantite");
+
+            ingredient ingr = new ingredient(nom, quantite);
+            stock.add(ingr);
+        }
+
+        return stock;
     }
 
     //Gérer la classe employee

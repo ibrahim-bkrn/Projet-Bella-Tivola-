@@ -2,25 +2,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import java.sql.*;
+import java.sql.*;
 
 public class Main {
     public static void main(String[] args) {
-        /*
-        Ajout d’un menu interactif en console
-        o Options disponibles :
-            § Afficher le menu (données chargées depuis MySQL).
-            § Passer une commande (vérification du stock et ajout à la base).
-            § Afficher l’état du stock et le modifier (ajout/retrait d’ingrédients).
-            § Consulter l’historique des commandes.
-         */
         Scanner sc = new Scanner(System.in);
-        Boolean console = true;
+        boolean console = true;
 
         database db = new database();
         db.main();
         Menu menuTivola = new Menu();
         Stock stock = new Stock();
         ArrayList<Commande> listeCommandesHistorique = new ArrayList<>();
+
         System.out.println("========= 🍝 BELLA TIVOLA - MENU CONSOLE =========");
         System.out.println("1. 📋 Gérer le menu");
         System.out.println("2. 🧾 Passer une commande");
@@ -31,23 +25,25 @@ public class Main {
         while (console) {
             System.out.print("➡ Choisissez une option : ");
             int choix = sc.nextInt();
+
             switch (choix) {
                 case 1:
                     System.out.println("========= 🍝 Gérer le menu =========");
                     System.out.println("1. 🍽️ Ajouter un plat");
                     System.out.println("2. 📜 Afficher le menu");
                     System.out.println("3. 🗑️ Supprimer un plat");
-                    System.out.println("4. 📜 Voir l'historique des commandes");
-                    System.out.println("5. 🚪 Quitter");
-                    Boolean consoleMenu = true;
+                    System.out.println("4. 🚪 Quitter");
+                    boolean consoleMenu = true;
+
                     while (consoleMenu) {
                         System.out.print("➡ Choisissez une option pour gérer le menu : ");
                         int choixConsoleMenu = sc.nextInt();
+
                         switch (choixConsoleMenu) {
                             case 1:
+                                sc.nextLine(); // flush
                                 System.out.print("🍽️ Nom du plat : ");
                                 String nomPlat = sc.nextLine();
-                                nomPlat = sc.nextLine();
 
                                 System.out.print("💰 Prix du plat : ");
                                 double prixPlat = sc.nextDouble();
@@ -60,8 +56,8 @@ public class Main {
 
                                 ArrayList<ingredient> ingredientsDuPlat = new ArrayList<>();
 
-                                for (int i = 1; i < nbIngredients+1; i++) {
-                                    System.out.print("🥄 Nom de l’ingrédient "+ i +" : ");
+                                for (int i = 1; i <= nbIngredients; i++) {
+                                    System.out.print("🥄 Nom de l’ingrédient " + i + " : ");
                                     String nomIngredient = sc.next();
 
                                     System.out.print("⚖️ Quantité en grammes : ");
@@ -70,158 +66,178 @@ public class Main {
                                     ingredientsDuPlat.add(new ingredient(nomIngredient, quantite));
                                 }
 
-                                // Instanciation du plat à ajouter
                                 menuTivola.ajtPlatDansMenu(new Plat(nomPlat, prixPlat, typePlat, ingredientsDuPlat));
-                                try{
-                                    db.insertPlat(new Plat(nomPlat, prixPlat, typePlat, ingredientsDuPlat));
-                                } catch (SQLException e){
-                                    System.out.println("Erreur lors de l'insertion du plat : " + e.getMessage());
-                                }
                                 break;
+
                             case 2:
-                                menuTivola.afficherMenu();
-                                break;
-                            case 3:
-                                System.out.print("Le nom du plat à supprimer : ");
-                                String nomPlatASupp = sc.nextLine();
-                                nomPlatASupp = sc.nextLine();
-                                menuTivola.suppPlatDuMenu(nomPlatASupp);
-                                break;
-                            case 4:
-                                System.out.println("-----> Historique de l'affichage des commandes");
-                                for (Commande commande : listeCommandesHistorique) {
-                                    commande.afficherCommande();
+                                try{
+                                    menuTivola.afficherMenu();
+                                } catch (SQLException e){
+                                    System.out.println("Erreur dans l'affichage du menu : " + e.getMessage());
                                 }
-                            case 5:
+                                break;
+
+                            case 3:
+                                sc.nextLine();
+                                System.out.print("🗑️ Nom du plat à supprimer : ");
+                                String nomPlatASupp = sc.nextLine();
+                                try{
+                                    menuTivola.suppPlatDuMenu(nomPlatASupp);
+                                } catch (SQLException e){
+                                    System.out.println("Erreur dans la suppréssion du plat : " + e.getMessage());
+                                }
+                                break;
+
+                            case 4:
                                 consoleMenu = false;
                                 break;
+
                             default:
-                                System.out.println("Commande non reconnue");
+                                System.out.println("❗ Commande non reconnue");
                                 break;
                         }
                     }
                     break;
+
                 case 2:
                     Commande commande = new Commande();
                     listeCommandesHistorique.add(commande);
-                    System.out.println("========= 🍝 Gérer la commande =========");
-                    System.out.println("1. 🍽️ Ajouter un plat à la commande");
-                    System.out.println("2. 📜 Afficher la commande");
-                    System.out.println("3. 🗑️ Avoir l'id de la commande");
-                    System.out.println("4. 🗑️ Avoir le prix total");
-                    System.out.println("5. 🚪 Confirmer la commande et l'enregistrer dans la Base de donnée");
-                    System.out.println("6. 🗑️ Supprimer la commande");
+
+                    System.out.println("========= 🧾 Gérer la commande =========");
+                    System.out.println("1. ➕ Ajouter un plat à la commande");
+                    System.out.println("2. 📄 Afficher la commande");
+                    System.out.println("3. 🆔 Voir l'ID de la commande");
+                    System.out.println("4. 💵 Voir le prix total");
+                    System.out.println("5. ✅ Confirmer et enregistrer");
+                    System.out.println("6. ❌ Supprimer la commande");
                     System.out.println("7. 🚪 Quitter");
 
-                    Boolean consoleCommande = true;
+                    boolean consoleCommande = true;
+
                     while (consoleCommande) {
-                        System.out.print("➡ Choisissez une option pour gérer le menu : ");
-                        int choixConsoleMenu = sc.nextInt();
-                        switch (choixConsoleMenu) {
+                        System.out.print("➡ Choisissez une option : ");
+                        int choixCommande = sc.nextInt();
+
+                        switch (choixCommande) {
                             case 1:
-                                System.out.print("Saisissez le nom du plat que vous voulez ajouté : ");
-                                String nomPlat = sc.nextLine();
-                                nomPlat = sc.nextLine();
-                                if (stock.verifierDisponibilite(menuTivola.returnPlat(nomPlat).getIngredients())){
-                                    commande.ajtPlatDansCommande(menuTivola.returnPlat(nomPlat));
-                                } else{
-                                    System.out.print("Les ingrédients du plats sont pas présent dans le stock ou ne sont pas suffisant");
+                                sc.nextLine();
+                                System.out.print("🍽️ Nom du plat à ajouter : ");
+                                String nomPlatCommande = sc.nextLine();
+
+                                if (stock.verifierDisponibilite(menuTivola.returnPlat(nomPlatCommande).getIngredients())) {
+                                    commande.ajtPlatDansCommande(menuTivola.returnPlat(nomPlatCommande));
+                                } else {
+                                    System.out.println("❌ Ingrédients insuffisants ou absents du stock.");
                                 }
                                 break;
+
                             case 2:
                                 commande.afficherCommande();
                                 break;
+
                             case 3:
-                                System.out.println("L'id de la commande est : " + commande.getId());
+                                System.out.println("🆔 ID de la commande : " + commande.getId());
                                 break;
+
                             case 4:
-                                System.out.println(commande.totalPrixCommande());
+                                System.out.println("💵 Prix total : " + commande.totalPrixCommande() + " €");
                                 break;
+
                             case 5:
                                 commande.ajtDansBDD();
-                                for (Plat plat : commande.getCommande()){
+                                for (Plat plat : commande.getCommande()) {
                                     stock.mettreAJourStock(plat.getIngredients());
                                 }
                                 break;
+
                             case 6:
                                 commande.suppDansBDD();
                                 break;
-                            case 7 :
+
+                            case 7:
                                 consoleCommande = false;
+                                break;
+
                             default:
-                                System.out.println("Commande non reconnue");
+                                System.out.println("❗ Commande non reconnue");
                                 break;
                         }
                     }
                     break;
+
                 case 3:
-                    System.out.println("========= 🍝 Gérer le stock =========");
-                    System.out.println("1. 🍽️ Ajouter un ingrédient");
-                    System.out.println("2. 📜 Supprimer un ingrédient");
-                    System.out.println("3. 🗑️ Voir le stock");
-                    System.out.println("4. Quitter");
+                    System.out.println("========= 📦 Gérer le stock =========");
+                    System.out.println("1. ➕ Ajouter un ingrédient");
+                    System.out.println("2. 🗑️ Supprimer un ingrédient");
+                    System.out.println("3. 📄 Voir le stock");
+                    System.out.println("4. 🚪 Quitter");
 
-                    Boolean consoleStock = true;
+                    boolean consoleStock = true;
+
                     while (consoleStock) {
-                        System.out.print("➡ Choisissez une option pour gérer le stock : ");
-                        int choixConsoleStock = sc.nextInt();
-                        switch (choixConsoleStock) {
-                            case 1:
-                                System.out.print("Nom de l'ingrédient : ");
-                                String nomIngredient = sc.nextLine();
-                                nomIngredient = sc.nextLine();
+                        System.out.print("➡ Choisissez une option : ");
+                        int choixStock = sc.nextInt();
 
-                                System.out.print("Quantité en gramme : ");
+                        switch (choixStock) {
+                            case 1:
+                                sc.nextLine();
+                                System.out.print("🥄 Nom de l'ingrédient : ");
+                                String nomIngredient = sc.nextLine();
+
+                                System.out.print("⚖️ Quantité (g) : ");
                                 int quantite = sc.nextInt();
 
                                 stock.ajouterIngredient(new ingredient(nomIngredient, quantite));
-                                try {
-                                    db.insertIngredient(new ingredient(nomIngredient, quantite));
-                                }catch (SQLException e){
-                                    System.out.println("Ingrédient pas ajouté : " + e.getMessage());
-                                }
                                 break;
+
                             case 2:
-                                System.out.print("Nom de l'ingrédient que vous voulez supprimer : ");
+                                sc.nextLine();
+                                System.out.print("🗑️ Nom de l'ingrédient à supprimer : ");
                                 String nomIngredientASupp = sc.nextLine();
-                                nomIngredientASupp = sc.nextLine();
 
-                                ingredient ingredientCherche = stock.rechercheIngredient(nomIngredientASupp);
-
-                                stock.supprimerIngredient(ingredientCherche);
+                                ingredient ingrCherche = stock.rechercheIngredient(nomIngredientASupp);
+                                stock.supprimerIngredient(ingrCherche);
                                 try {
-                                    db.suppIngredient(ingredientCherche);
-                                }catch (SQLException e){
-                                    System.out.println("Ingrédient pas ajouté : " + e.getMessage());
+                                    db.suppIngredient(ingrCherche);
+                                } catch (SQLException e) {
+                                    System.out.println("❌ Erreur lors de la suppression : " + e.getMessage());
                                 }
                                 break;
+
                             case 3:
                                 stock.afficherStock();
                                 break;
+
                             case 4:
                                 consoleStock = false;
                                 break;
+
                             default:
-                                System.out.println("Commande non reconnue");
+                                System.out.println("❗ Commande non reconnue");
                                 break;
                         }
                     }
+                    break;
+
                 case 4:
-                    System.out.println("---> Historique des commandes : ");
-                    for(Commande cmd : listeCommandesHistorique){
+                    System.out.println("📜 Historique des commandes :");
+                    for (Commande cmd : listeCommandesHistorique) {
                         cmd.afficherCommande();
                     }
                     break;
+
                 case 5:
                     console = false;
+                    System.out.println("👋 Merci d'avoir utilisé Bella Tivola !");
                     break;
+
                 default:
-                    System.out.println("Commande non reconnue");
+                    System.out.println("❗ Commande non reconnue");
                     break;
             }
-
         }
     }
 }
+
 
 
