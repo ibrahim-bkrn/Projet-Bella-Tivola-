@@ -9,7 +9,7 @@ public class database {
     public void main (){
         try {
             conn = DriverManager.getConnection(url, user, password);
-            System.out.println("✅ Connexion réussie à la base de données !");
+            //System.out.println("✅ Connexion réussie à la base de données !");
         } catch (SQLException e) {
             System.out.println("❌ Erreur de connexion : " + e.getMessage());
         }

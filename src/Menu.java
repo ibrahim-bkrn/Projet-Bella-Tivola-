@@ -11,12 +11,23 @@ public class Menu {
         leMenu.add(platAjoute);
     }
 
-    public void suppPlatDuMenu(String nomPlatASupprimer) {
+    public void suppPlatDuMenu(String nomPlat) {
         for (Plat plat : leMenu) {
-            if (plat.getNom().equals(nomPlatASupprimer)) {
+            if (plat.getNom().equals(nomPlat)) {
                 leMenu.remove(plat);
+            } else {
+                System.out.println(plat.getNom() + " n'existe pas !");
             }
         }
+    }
+
+    public Plat returnPlat(String nomPlat) {
+        for (Plat plat : leMenu) {
+            if (plat.getNom().equals(nomPlat)) {
+                return plat;
+            }
+        }
+        return null;
     }
 
     public void afficherMenu() {

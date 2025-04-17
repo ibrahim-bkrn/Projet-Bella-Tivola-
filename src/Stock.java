@@ -24,8 +24,30 @@ public class Stock {
         }
     }
 
-    public void supprimerIngredient(ingredient ingr) {
-        ingredients.remove(ingr);
+    public ingredient rechercheIngredient(String nomIngredient) {
+        for (ingredient i : ingredients) {
+            if (i.getNom().equals(nomIngredient)) {
+                return i;
+            } else {
+                return null;
+            }
+        } return null;
+    }
+
+
+    public String supprimerIngredient(ingredient ingrNom) {
+        Boolean trouve = false;
+        for (ingredient i : ingredients) {
+            if (i.getNom().equals(ingrNom)) {
+                ingredients.remove(i);
+                trouve = true;
+            }
+        }
+        if(trouve == false){
+            return "Ingrédient pas trouvé";
+        } else {
+            return null;
+        }
     }
 
     // Les méthodes permettant d'enlever du stock apres avoir fini une commande
@@ -59,6 +81,7 @@ public class Stock {
     }
 
     public void afficherStock() {
+        System.out.println("---> Stock ");
         for (ingredient ingredientDuStock : ingredients) {
             System.out.println(ingredientDuStock.getNom() + " " + ingredientDuStock.getQuantite() +"g");
         }

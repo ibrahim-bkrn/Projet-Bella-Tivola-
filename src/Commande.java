@@ -17,7 +17,6 @@ public class Commande {
             this.id = 1; // Valeur par défaut si erreur
         }
         db.main();
-
     }
 
     public List<Plat> getCommande() {return laCommande;}
