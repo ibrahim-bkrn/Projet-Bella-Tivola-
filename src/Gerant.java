@@ -1,8 +1,19 @@
+import java.sql.SQLException;
+
 public class Gerant extends Employee {
+    database db = new database();
 
     public Gerant(String nom, int id) {
         super(nom, id);
+        db.main();
+        try{
+            db.insertGérant(this);
+        } catch (SQLException e){
+            System.out.println("L'ingrédient n'a pas pu être enregistrer dans la base de donnée, l'erreur :" + e.getMessage());
+        }
     }
+
+    public String getRole (){return "Gerant";}
 
     @Override
     public void afficherInfosEmployee() {

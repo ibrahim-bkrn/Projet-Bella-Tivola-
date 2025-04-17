@@ -1,12 +1,14 @@
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import
 
 public class Stock {
     private List<ingredient> ingredients;
+    database db = new database();
 
     public Stock() {
         this.ingredients = new ArrayList<>();
+        db.main();
     }
 
     public List<ingredient> getIngredients() {
@@ -15,6 +17,11 @@ public class Stock {
 
     public void ajouterIngredient(ingredient ingr) {
         ingredients.add(ingr);
+        try{
+            db.insertIngredient(ingr);
+        } catch (SQLException e){
+            System.out.println("L'ingrédient n'a pas pu être enregistrer dans la base de donnée, l'erreur :" + e.getMessage());
+        }
     }
 
     public void supprimerIngredient(ingredient ingr) {

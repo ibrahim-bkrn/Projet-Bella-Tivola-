@@ -11,6 +11,14 @@ public class Menu {
         leMenu.add(platAjoute);
     }
 
+    public void suppPlatDuMenu(String nomPlatASupprimer) {
+        for (Plat plat : leMenu) {
+            if (plat.getNom().equals(nomPlatASupprimer)) {
+                leMenu.remove(plat);
+            }
+        }
+    }
+
     public void afficherMenu() {
         System.out.println("==============Menu================");
         for (int i = 0; i < leMenu.size(); i++) {

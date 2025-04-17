@@ -1,14 +1,27 @@
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Commande {
     ArrayList<Plat> laCommande; // Les élements de la liste sotn de type plat, on pourra donc les manipulers avec elt.getnom() apr exemple
+    private static int compteur = 0;
+    private int id;
+    database db = new database();
 
     Commande() {
         this.laCommande = new ArrayList<>();
+        try {
+            this.id = db.getDernierIdCommande() + 1;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            this.id = 1; // Valeur par défaut si erreur
+        }
+        db.main();
+
     }
 
     public List<Plat> getCommande() {return laCommande;}
+    public int getId() {return id;}
 
     public void ajtPlatDansCommande(Plat platAjoute) {
         laCommande.add(platAjoute);
@@ -21,6 +34,22 @@ public class Commande {
         }
         totalPrixCommande();
         System.out.println("==================================");
+    }
+
+    public void ajtDansBDD (){
+        try{
+            db.insertCommande(this);
+        } catch(SQLException e){
+            System.out.println("La commande ne c'est pas insérer dans la BDD : "+e.getMessage());
+        }
+    }
+
+    public void suppDansBDD() {
+        try{
+            db.suppCommande(this);
+        } catch(SQLException e){
+            System.out.println("La commande ne c'est pas supprimer dans la BDD : "+e.getMessage());
+        }
     }
 
     public double totalPrixCommande() {
