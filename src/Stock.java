@@ -43,7 +43,7 @@ public class Stock {
     }
 
 
-    public String supprimerIngredient(ingredient ingrNom) {
+    public void supprimerIngredient(String ingrNom) {
         Boolean trouve = false;
         for (ingredient i : ingredients) {
             if (i.getNom().equals(ingrNom)) {
@@ -51,10 +51,8 @@ public class Stock {
                 trouve = true;
             }
         }
-        if(trouve == false){
-            return "Ingrédient pas trouvé";
-        } else {
-            return null;
+        if(!trouve){
+            System.out.println("Ingredient non trouvé ! ");
         }
     }
 
@@ -95,28 +93,3 @@ public class Stock {
         }
     }
 }
-
-
-
-
-
-/*
-
-    Map<String, Integer> ages = new HashMap<>();
-    ages.put("Graven", 18);
-    ages.put("Graven", 18);
-    ages.put("Graven", 18);   POUR AJOUTER UNE CLE SUIVI DE SA VALEUR
-
-    ages.remove("Graven");    POUR ENLEVER A PARTIR D'UNE CLE
-
-    System.out.println(ages.toString);  POUR VOIR LA HASHMAP(dictionnaire)
-
-    ages.clear(); POUR NETTOYER L'ENSEMBLE DES VALEURS
-
-    if (ages.containsKey("graven"){}  ¨POUR VERIFIER A PARTIR D'UNE CLE, Values POUR LES VALEURS
-
-    for (Entry<String,Integer> val : ages.entrySet()){
-        Systeme.out.println(val.getKey() + val.getValue);
-    }
-
- */

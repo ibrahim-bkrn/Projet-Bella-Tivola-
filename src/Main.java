@@ -195,10 +195,9 @@ public class Main {
                                 System.out.print("🗑️ Nom de l'ingrédient à supprimer : ");
                                 String nomIngredientASupp = sc.nextLine();
 
-                                ingredient ingrCherche = stock.rechercheIngredient(nomIngredientASupp);
-                                stock.supprimerIngredient(ingrCherche);
+                                stock.supprimerIngredient(nomIngredientASupp);
                                 try {
-                                    db.suppIngredient(ingrCherche);
+                                    db.suppIngredient(nomIngredientASupp);
                                 } catch (SQLException e) {
                                     System.out.println("❌ Erreur lors de la suppression : " + e.getMessage());
                                 }

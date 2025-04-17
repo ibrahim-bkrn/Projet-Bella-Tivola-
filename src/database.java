@@ -68,11 +68,11 @@ public class database {
         preparedStatement.executeUpdate();
     }
 
-    public void suppIngredient(ingredient ingr) throws SQLException {
+    public void suppIngredient(String nomIngr) throws SQLException {
         String sql = "DELETE FROM stocks WHERE nom = ?";
         PreparedStatement preparedStatement = conn.prepareStatement(sql);
 
-        preparedStatement.setString(1, ingr.getNom());
+        preparedStatement.setString(1, nomIngr);
 
         preparedStatement.executeUpdate();
     }
