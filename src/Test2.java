@@ -1,4 +1,5 @@
 import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -6,7 +7,7 @@ public class Test2 {
     public static void main(String[] args){
 
 
-        List<ingredient> ingredients1 = new ArrayList<>();
+        /*List<ingredient> ingredients1 = new ArrayList<>();
         ingredients1.add(new ingredient("Tomate", 100));
         ingredients1.add(new ingredient("Mozzarella", 80));
 
@@ -43,7 +44,7 @@ public class Test2 {
         commande.afficherCommande();
         menu.afficherMenu();*/
 
-        database database = new database();
+        /*database database = new database();
         database.main();
         try{
             database.insertPlat(platTest);
@@ -52,7 +53,7 @@ public class Test2 {
             System.out.println("plat ajouté avec succes!");
         } catch (SQLException e){
             System.out.println("ça a pas marché" + e.getMessage());
-        }
+        }*/
 
         /*ingredient ingr1 = new ingredient("tomate", 500);
         //System.out.println(ingr1.toString());
@@ -62,6 +63,15 @@ public class Test2 {
         } catch (SQLException e){
             System.out.println("Ingrédient non ajouté" + e.getMessage());
         }*/
+
+        Menu menu = new Menu();
+        /*try{
+            menu.afficherMenu();
+        } catch (SQLException e){
+            System.out.println(e);
+        }*/
+
+        System.out.println(menu.returnPlat("Tiramisu").getIngredients());
 
     }
 }

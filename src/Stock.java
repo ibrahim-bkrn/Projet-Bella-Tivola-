@@ -14,7 +14,7 @@ public class Stock {
             for (ingredient ingr : db.selectIngredientsPourStock()) {
                 ingredients.add(ingr);
             }
-        }catch(SQLException e){
+        } catch(SQLException e){
             System.out.println(e.getMessage());
         }
     }
@@ -42,17 +42,19 @@ public class Stock {
         } return null;
     }
 
-
     public void supprimerIngredient(String ingrNom) {
-        Boolean trouve = false;
-        for (ingredient i : ingredients) {
-            if (i.getNom().equals(ingrNom)) {
+        boolean trouve = false;
+
+        for (int i = 0; i < ingredients.size(); i++) {
+            if (ingredients.get(i).getNom().equals(ingrNom)) {
                 ingredients.remove(i);
                 trouve = true;
+                break; // on sort après avoir supprimé 1 seul ingrédient
             }
         }
-        if(!trouve){
-            System.out.println("Ingredient non trouvé ! ");
+
+        if (!trouve) {
+            System.out.println("Ingrédient non trouvé !");
         }
     }
 
@@ -64,7 +66,7 @@ public class Stock {
             for (ingredient stock : ingredients) {
                 if (stock.getNom().equals(besoin.getNom())) {
                     int nouvelleQuantite = stock.getQuantite() - besoin.getQuantite();
-                    stock.setQuantite(nouvelleQuantite);
+                    stock.setQuantite(stock.getNom(), nouvelleQuantite);
                     break;
                 }
             }

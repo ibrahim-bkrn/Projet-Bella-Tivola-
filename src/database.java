@@ -77,6 +77,13 @@ public class database {
         preparedStatement.executeUpdate();
     }
 
+    public void setQuantiteBDD(int nvQuantite, String nomIngr) throws SQLException {
+        String sql = "UPDATE stocks SET quantite = nvQuantite WHERE nom = nomIngr;";
+        PreparedStatement preparedStatement = conn.prepareStatement(sql);
+
+        preparedStatement.executeUpdate();
+    }
+
     public List<ingredient> selectIngredientsPourStock() throws SQLException {
         List<ingredient> stock = new ArrayList<>();
         String sql = "SELECT nom, quantite FROM stocks";

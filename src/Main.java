@@ -64,6 +64,7 @@ public class Main {
                                     int quantite = sc.nextInt();
 
                                     ingredientsDuPlat.add(new ingredient(nomIngredient, quantite));
+                                    //stock.ajouterIngredient(new ingredient(nomIngredient, quantite));
                                 }
 
                                 menuTivola.ajtPlatDansMenu(new Plat(nomPlat, prixPlat, typePlat, ingredientsDuPlat));
@@ -124,10 +125,14 @@ public class Main {
                                 System.out.print("🍽️ Nom du plat à ajouter : ");
                                 String nomPlatCommande = sc.nextLine();
 
-                                if (stock.verifierDisponibilite(menuTivola.returnPlat(nomPlatCommande).getIngredients())) {
-                                    commande.ajtPlatDansCommande(menuTivola.returnPlat(nomPlatCommande));
+                                if(menuTivola.returnPlat(nomPlatCommande).getIngredients() == null ){
+                                    System.out.println("❌ Ingrédients du plat absents du stock.");
                                 } else {
-                                    System.out.println("❌ Ingrédients insuffisants ou absents du stock.");
+                                    if (stock.verifierDisponibilite(menuTivola.returnPlat(nomPlatCommande).getIngredients())) {
+                                        commande.ajtPlatDansCommande(menuTivola.returnPlat(nomPlatCommande));
+                                    } else {
+                                        System.out.println("❌ Ingrédients du plat insuffisants");
+                                    }
                                 }
                                 break;
 
@@ -146,12 +151,15 @@ public class Main {
                             case 5:
                                 commande.ajtDansBDD();
                                 for (Plat plat : commande.getCommande()) {
-                                    stock.mettreAJourStock(plat.getIngredients());
+                                    if (plat.getIngredients() == null || plat.getIngredients().isEmpty()) {
+                                        stock.mettreAJourStock(plat.getIngredients());
+                                    }
                                 }
                                 break;
 
                             case 6:
                                 commande.suppDansBDD();
+                                consoleCommande = false;
                                 break;
 
                             case 7:
